@@ -1,0 +1,27 @@
+/* FONTS */
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;1,300&family=Raleway:wght@400;500;600;700;800&display=swap');
+
+/* GLOBAL COLOURS */
+$indigo-dye: #133c55ff;
+$honolulu-blue: #386fa4ff;
+$carolina-blue: #59a5d8ff;
+$baby-blue: #84d2f6ff;
+$sky-blue-crayola: #91e5f6ff;
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    background-color: #fdfdfd;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+* {
+    box-sizing: border-box;
+}
