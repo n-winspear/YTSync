@@ -9,52 +9,29 @@ import YoutubeEmbed from '../components/YoutubeEmbed';
 import styles from '../styles/watch.module.scss';
 
 export async function getServerSideProps({ query }) {
+    const { v: videoId } = query;
+
+    const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}&key=${process.env.NEXT_PUBLIC_YT_API_KEY}`
+    );
+
+    const data = await response.json();
+
+    const videoData = data.items[0];
+
     return {
         props: {
-            video: {
-                kind: 'youtube#searchResult',
-                etag: 'geprEHgnFh9z8nGRvn89y_tOJds',
-                id: {
-                    kind: 'youtube#video',
-                    videoId: 'PzLvD24pbic',
-                },
-                snippet: {
-                    publishedAt: '2021-12-24T12:28:58Z',
-                    channelId: 'UCOgGAfSUy5LvEyVS_LF5kdw',
-                    title: 'I gave my best friend a Mullet for Christmas.',
-                    description:
-                        'Go to https://NordVPN.com/JOLLY or use code jolly to get a 2-year plan plus a bonus gift with a huge discount. For a limited time ...',
-                    thumbnails: {
-                        default: {
-                            url: 'https://i.ytimg.com/vi/PzLvD24pbic/default.jpg',
-                            width: 120,
-                            height: 90,
-                        },
-                        medium: {
-                            url: 'https://i.ytimg.com/vi/PzLvD24pbic/mqdefault.jpg',
-                            width: 320,
-                            height: 180,
-                        },
-                        high: {
-                            url: 'https://i.ytimg.com/vi/PzLvD24pbic/hqdefault.jpg',
-                            width: 480,
-                            height: 360,
-                        },
-                    },
-                    channelTitle: 'JOLLY',
-                    liveBroadcastContent: 'none',
-                    publishTime: '2021-12-24T12:28:58Z',
-                },
-            },
+            videoData,
         },
     };
 }
 
 // TODO: Add in video fetching functionality
 
-const Watch = ({ video }) => {
-    const { title, description } = video.snippet;
-    const { videoId } = video.id;
+const Watch = ({ videoData }) => {
+    const { title, description } = videoData.snippet;
+    const { viewCount, likeCount } = videoData.statistics;
+    const { id } = videoData;
 
     return (
         <>
@@ -69,9 +46,11 @@ const Watch = ({ video }) => {
             <main>
                 <HeaderBar />
                 <div className={styles.video}>
-                    <YoutubeEmbed videoId={videoId} />
+                    <YoutubeEmbed videoId={id} />
                     <h1>{title}</h1>
                     <h2>{description}</h2>
+                    <h2>{viewCount}</h2>
+                    <h2>{likeCount}</h2>
                 </div>
             </main>
         </>

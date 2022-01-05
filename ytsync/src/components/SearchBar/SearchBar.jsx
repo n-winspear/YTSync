@@ -14,10 +14,6 @@ const SearchBar = () => {
     const router = useRouter();
     const [searchText, setSearchText] = useState('');
 
-    if (router.query.searchText && router.query.searchText !== searchText) {
-        setSearchText(router.query.searchText);
-    }
-
     const search = () => {
         router.push({
             pathname: 'search-results',

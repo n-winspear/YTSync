@@ -1,5 +1,5 @@
 // Next Imports
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
@@ -155,31 +155,32 @@ const exData = {
     ],
 };
 
+/*
 export async function getServerSideProps({ query }) {
     return {
         props: exData,
     };
-    const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&order=date&q=${query.searchText}&key=${process.env.NEXT_PUBLIC_YT_API_KEY}`
-    );
-
-    const data = await response.json();
-
-    const videoResults = data.items.filter(
-        (video) => video.id.kind === 'youtube#video'
-    );
-
-    return {
-        props: {
-            videoResults,
-        },
-    };
 }
+*/
 
-export default function SearchResults({ videoResults }) {
+export default function SearchResults() {
     const router = useRouter();
     const { searchText } = router.query;
-    const [videos, setVideos] = useState(videoResults);
+    const [videos, setVideos] = useState([]);
+
+    useEffect(async () => {
+        const response = await fetch(
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${searchText}&key=${process.env.NEXT_PUBLIC_YT_API_KEY}`
+        );
+
+        const data = await response.json();
+
+        const videoResults = data.items.filter(
+            (video) => video.id.kind === 'youtube#video'
+        );
+
+        setVideos(videoResults);
+    }, [searchText]);
 
     return (
         <>
