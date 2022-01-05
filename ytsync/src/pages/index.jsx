@@ -3,7 +3,7 @@ import Head from 'next/head';
 
 // Custom Component Imports
 import HeaderBar from '../components/HeaderBar';
-import YoutubeEmbed from '../components/YoutubeEmbed/YoutubeEmbed';
+import SearchBar from '../components/SearchBar';
 
 // Style Imports
 
@@ -19,7 +19,7 @@ export default function Home() {
 
             <main>
                 <HeaderBar />
-                <YoutubeEmbed embedId={'PzLvD24pbic'} />
+                <SearchBar />
             </main>
         </div>
     );
