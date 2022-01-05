@@ -51,22 +51,27 @@ $sky-blue-crayola: #91e5f6ff;
             font-size: 14px;
             font-weight: 300;
         }
-    }
 
-    .channel {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
+        .channel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 12px;
 
-        .profileImage {
-            border-radius: 50px;
+            .profileImage {
+                border-radius: 50px;
+            }
+
+            h4 {
+                font-weight: 300;
+                font-size: 16px;
+                margin-left: 8px;
+            }
         }
 
-        h4 {
+        .releasedTime {
+            margin-top: 8px;
             font-weight: 300;
-            font-size: 16px;
-            margin-left: 8px;
         }
     }
 }

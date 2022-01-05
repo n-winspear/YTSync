@@ -9,8 +9,6 @@ import YoutubeEmbed from '../components/YoutubeEmbed';
 import styles from '../styles/watch.module.scss';
 
 export async function getServerSideProps({ query }) {
-    console.log(query.v);
-
     return {
         props: {
             video: {

@@ -1,6 +1,7 @@
 // Next Imports
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
 
 // Custom Component Imports
 
@@ -9,10 +10,44 @@ import styles from './SearchResult.module.scss';
 
 const SearchResult = ({ video }) => {
     const router = useRouter();
-
+    const [timeSincePublished, setTimeSincePublished] = useState();
     const { url, width, height } = video.snippet.thumbnails.medium;
-    const { title, description } = video.snippet;
+    const { title, description, publishedAt } = video.snippet;
     const { videoId } = video.id;
+
+    const calculateTimeSincePublished = async () => {
+        const publishDate = new Date(publishedAt);
+        const today = new Date();
+        const dayCountDifference =
+            (today.getTime() - publishDate.getTime()) / (1000 * 3600 * 24);
+
+        if (dayCountDifference < 1) {
+            let difference = Math.floor(dayCountDifference * 24);
+            setTimeSincePublished(
+                `${difference} ${difference === 1 ? 'hour' : 'hours'} ago`
+            );
+        } else if (dayCountDifference < 7) {
+            let difference = Math.floor(dayCountDifference);
+            setTimeSincePublished(
+                `${difference} ${difference === 1 ? 'day' : 'days'} ago`
+            );
+        } else if (dayCountDifference < 30) {
+            let difference = Math.floor(dayCountDifference / 7);
+            setTimeSincePublished(
+                `${difference} ${difference === 1 ? 'week' : 'weeks'} ago`
+            );
+        } else if (dayCountDifference < 365) {
+            let difference = Math.floor(dayCountDifference / 7 / 4);
+            setTimeSincePublished(
+                `${difference} ${difference === 1 ? 'month' : 'months'} ago`
+            );
+        } else {
+            let difference = Math.floor(dayCountDifference / 7 / 4 / 12);
+            setTimeSincePublished(
+                `${difference} ${difference === 1 ? 'year' : 'years'} ago`
+            );
+        }
+    };
 
     const watchVideo = () => {
         router.push({
@@ -20,6 +55,10 @@ const SearchResult = ({ video }) => {
             query: { v: videoId },
         });
     };
+
+    useEffect(async () => {
+        await calculateTimeSincePublished();
+    }, []);
 
     return (
         <div
@@ -45,6 +84,7 @@ const SearchResult = ({ video }) => {
                     />
                     <h4>Jolly</h4>
                 </div>
+                <div className={styles.releasedTime}>{timeSincePublished}</div>
             </div>
         </div>
     );
