@@ -40,6 +40,7 @@ $secondaryTextColour: #090909ff;
         border-left: none;
         border-radius: 0px 4px 4px 0px;
         background-color: #f8f8f8ff;
+        transition: all 0.2s ease 0s;
 
         &:hover {
             cursor: pointer;

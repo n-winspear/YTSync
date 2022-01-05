@@ -182,7 +182,7 @@ export default function SearchResults({ videoResults }) {
     const [videos, setVideos] = useState(videoResults);
 
     return (
-        <div>
+        <>
             <Head>
                 <title>Search Results</title>
                 <meta
@@ -201,6 +201,6 @@ export default function SearchResults({ videoResults }) {
                     ))}
                 </div>
             </main>
-        </div>
+        </>
     );
 }

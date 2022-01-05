@@ -1,5 +1,6 @@
 // Next Imports
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 // Custom Component Imports
 
@@ -7,12 +8,26 @@ import Image from 'next/image';
 import styles from './SearchResult.module.scss';
 
 const SearchResult = ({ video }) => {
-    const { url, width, height } = video.snippet.thumbnails.medium;
+    const router = useRouter();
 
+    const { url, width, height } = video.snippet.thumbnails.medium;
     const { title, description } = video.snippet;
+    const { videoId } = video.id;
+
+    const watchVideo = () => {
+        router.push({
+            pathname: 'watch',
+            query: { v: videoId },
+        });
+    };
 
     return (
-        <div className={styles.result}>
+        <div
+            className={styles.result}
+            onClick={(e) => {
+                e.preventDefault();
+                watchVideo();
+            }}>
             <div className={styles.thumbnail}>
                 <Image src={url} width={width} height={height} />
             </div>
