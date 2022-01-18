@@ -10,6 +10,7 @@ import styles from './SearchResult.module.scss';
 
 const SearchResult = ({ video }) => {
     const router = useRouter();
+    const { roomId } = router.query;
     const [timeSincePublished, setTimeSincePublished] = useState();
     const { url, width, height } = video.snippet.thumbnails.medium;
     const { title, description, publishedAt } = video.snippet;
@@ -51,7 +52,7 @@ const SearchResult = ({ video }) => {
 
     const watchVideo = () => {
         router.push({
-            pathname: 'watch',
+            pathname: `/room/${roomId}/watch`,
             query: { v: videoId },
         });
     };

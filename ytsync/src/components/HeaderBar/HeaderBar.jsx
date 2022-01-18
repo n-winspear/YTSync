@@ -8,7 +8,7 @@ import SearchBar from '../SearchBar';
 // Style Imports
 import styles from './HeaderBar.module.scss';
 
-const HeaderBar = () => {
+const HeaderBar = ({ showSearch }) => {
     const router = useRouter();
 
     return (
@@ -19,7 +19,7 @@ const HeaderBar = () => {
                 </Link>
             </div>
             <div className={styles.searchBar}>
-                <SearchBar />
+                {showSearch && <SearchBar />}
             </div>
         </header>
     );

@@ -12,11 +12,13 @@ import { useState } from 'react';
 
 const SearchBar = () => {
     const router = useRouter();
+    const { roomId } = router.query;
+
     const [searchText, setSearchText] = useState('');
 
     const search = () => {
         router.push({
-            pathname: 'search-results',
+            pathname: `/room/${roomId}/search-results`,
             query: { searchText },
         });
     };

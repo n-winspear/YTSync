@@ -1,0 +1,23 @@
+/* GLOBAL COLOURS */
+$indigo-dye: #133c55ff;
+$honolulu-blue: #386fa4ff;
+$carolina-blue: #59a5d8ff;
+$baby-blue: #84d2f6ff;
+$sky-blue-crayola: #91e5f6ff;
+
+/* CUSTOM VARIABLES */
+$headerBarHeight: 56px;
+
+.room {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(60vh - $headerBarHeight);
+
+    h1 {
+        font-size: 84px;
+        margin: 0px 0px 48px 0px;
+        color: $carolina-blue;
+    }
+}

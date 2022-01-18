@@ -2,11 +2,11 @@
 import Head from 'next/head';
 
 // Custom Component Imports
-import HeaderBar from '../components/HeaderBar';
-import YoutubeEmbed from '../components/YoutubeEmbed';
+import HeaderBar from '../../../components/HeaderBar';
+import YoutubeEmbed from '../../../components/YoutubeEmbed';
 
 // Style Imports
-import styles from '../styles/watch.module.scss';
+import styles from '../../../styles/watch.module.scss';
 
 export async function getServerSideProps({ query }) {
     const { v: videoId } = query;

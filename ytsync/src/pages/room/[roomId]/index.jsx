@@ -2,13 +2,13 @@
 import Head from 'next/head';
 
 // Custom Component Imports
-import HeaderBar from '../components/HeaderBar';
-import SearchBar from '../components/SearchBar';
+import HeaderBar from '../../../components/HeaderBar';
+import SearchBar from '../../../components/SearchBar';
 
 // Style Imports
-import styles from '../styles/home.module.scss';
+import styles from '../../../styles/room.module.scss';
 
-export default function Home() {
+const Room = () => {
     return (
         <div>
             <Head>
@@ -19,13 +19,14 @@ export default function Home() {
             </Head>
 
             <main>
-                <HeaderBar showSearch={false} />
-                <div className={styles.home}>
-                    <h2>Welcome to</h2>
-                    <h1>Youtube Sync</h1>
-                    {/* Add in "Generate Room Button Here" */}
+                <HeaderBar showSearch={true} />
+                <div className={styles.room}>
+                    <h1>Search</h1>
+                    <SearchBar />
                 </div>
             </main>
         </div>
     );
-}
+};
+
+export default Room;
