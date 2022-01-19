@@ -12,7 +12,7 @@ export async function getServerSideProps({ query }) {
     const { v: videoId } = query;
 
     const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}&key=${process.env.NEXT_PUBLIC_YT_API_KEY}`
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}&key=${process.env.YT_API_KEY}`
     );
 
     const data = await response.json();

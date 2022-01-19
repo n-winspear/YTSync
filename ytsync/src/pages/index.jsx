@@ -1,14 +1,23 @@
 // Next Imports
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 // Custom Component Imports
 import HeaderBar from '../components/HeaderBar';
-import SearchBar from '../components/SearchBar';
 
 // Style Imports
 import styles from '../styles/home.module.scss';
 
 export default function Home() {
+    const router = useRouter();
+
+    useEffect(() => {
+        router.push({
+            pathname: `/room/1`,
+        });
+    }, []);
+
     return (
         <div>
             <Head>

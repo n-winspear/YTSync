@@ -39,18 +39,16 @@ export default function SearchResults({ videoResults }) {
                 .map((video) => {
                     let videoCopy = JSON.parse(JSON.stringify(video));
 
-                    /*
                     let parser = new DOMParser();
 
-                        videoCopy.snippet.title = parser.parseFromString(
-                            `<!doctype html><body>${video.snippet.title}`,
-                            'text/html'
-                        );
-                        videoCopy.snippet.description = parser.parseFromString(
-                            `<!doctype html><body>${video.snippet.description}`,
-                            'text/html'
-                        ).body.textContent;
-                        */
+                    videoCopy.snippet.title = parser.parseFromString(
+                        `<!doctype html><body>${video.snippet.title}`,
+                        'text/html'
+                    ).body.textContent;
+                    videoCopy.snippet.description = parser.parseFromString(
+                        `<!doctype html><body>${video.snippet.description}`,
+                        'text/html'
+                    ).body.textContent;
 
                     videoCopy.publishTime = new Date(video.snippet.publishedAt);
 
