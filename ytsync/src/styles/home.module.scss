@@ -7,6 +7,8 @@ $sky-blue-crayola: #91e5f6ff;
 
 /* CUSTOM VARIABLES */
 $headerBarHeight: 56px;
+$primaryTextColour: #f1f1f1ff;
+$secondaryTextColour: #090909ff;
 
 .home {
     display: flex;
@@ -25,5 +27,27 @@ $headerBarHeight: 56px;
         font-family: 'Raleway', sans-serif;
         font-size: 40px;
         margin: 0;
+    }
+
+    button {
+        width: 264px;
+        height: 48px;
+        border: transparent;
+        border-radius: 4px;
+        background-color: $carolina-blue;
+        color: $primaryTextColour;
+        font-size: 20px;
+        font-weight: 300;
+        box-shadow: rgba(96, 96, 96, 0.2) 0px 2px 8px 0px;
+        transition: all 0.2s ease 0s;
+
+        &:hover {
+            cursor: pointer;
+            filter: brightness(110%);
+        }
+
+        &:focus {
+            outline: none;
+        }
     }
 }

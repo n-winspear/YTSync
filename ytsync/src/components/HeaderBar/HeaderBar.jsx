@@ -18,8 +18,10 @@ const HeaderBar = ({ showSearch }) => {
                     <h1>YTS</h1>
                 </Link>
             </div>
-            <div className={styles.searchBar}>
-                {showSearch && <SearchBar />}
+            <div className={styles.searchBarContainer}>
+                <div className={styles.searchBar}>
+                    {showSearch && <SearchBar />}
+                </div>
             </div>
         </header>
     );
