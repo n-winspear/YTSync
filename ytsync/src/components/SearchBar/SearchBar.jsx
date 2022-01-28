@@ -1,5 +1,4 @@
 // Next Imports
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 // Custom Component Imports
@@ -12,13 +11,13 @@ import { useState } from 'react';
 
 const SearchBar = () => {
     const router = useRouter();
-    const { roomId } = router.query;
+    const { roomCode } = router.query;
 
     const [searchText, setSearchText] = useState('');
 
     const search = () => {
         router.push({
-            pathname: `/room/${roomId}/search-results`,
+            pathname: `/room/${roomCode}/search-results`,
             query: { searchText },
         });
     };

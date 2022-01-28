@@ -1,21 +1,49 @@
 // Next Imports
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 // Custom Component Imports
 import HeaderBar from '../components/HeaderBar';
-import { v4 as uuidv4 } from 'uuid';
+import { NIL, v4 as uuidv4 } from 'uuid';
 
 // Style Imports
 import styles from '../styles/home.module.scss';
 
 export default function Home() {
-    const router = useRouter();
+    const router = useRouter(null);
 
-    const createRooom = () => {
-        const roomId = uuidv4().slice(0, 8);
+    const [roomCode, setRoomCode] = useState(null);
+
+    useEffect(async () => {
+        setRoomCode(sessionStorage.getItem('roomCode'));
+    }, []);
+
+    const createRooom = async () => {
+        const res = await fetch('/api/createRoom', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+        });
+
+        const data = await res.json();
+
+        const { code } = data.room;
+
+        console.log(code);
+
+        sessionStorage.setItem('roomCode', code);
+
         router.push({
-            pathname: `/room/${roomId}`,
+            pathname: `/room/${code}`,
+        });
+    };
+
+    const reJoinRoom = async () => {
+        router.push({
+            pathname: `/room/${roomCode}`,
         });
     };
 
@@ -33,13 +61,23 @@ export default function Home() {
                 <div className={styles.home}>
                     <h2>Welcome to</h2>
                     <h1>Youtube Sync</h1>
-                    <button
-                        onClick={(e) => {
-                            e.preventDefault;
-                            createRooom();
-                        }}>
-                        Create Room
-                    </button>
+                    {roomCode === null ? (
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault;
+                                createRooom();
+                            }}>
+                            Create Room
+                        </button>
+                    ) : (
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault;
+                                reJoinRoom();
+                            }}>
+                            Rejoin Room
+                        </button>
+                    )}
                 </div>
             </main>
         </div>
