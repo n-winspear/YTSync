@@ -1,20 +1,45 @@
-.video {
+/* GLOBAL COLOURS */
+$indigo-dye: #133c55ff;
+$honolulu-blue: #386fa4ff;
+$carolina-blue: #59a5d8ff;
+$baby-blue: #84d2f6ff;
+$sky-blue-crayola: #91e5f6ff;
+
+.watch {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    max-width: 740px;
-    margin: 96px auto 0px auto;
+    max-width: 1300px;
+    margin: 0px auto;
 
-    h1 {
-        font-weight: 500;
-        font-size: 28px;
-        margin: 20px 0px 12px 0px;
+    .noVideo {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 96px auto 0px auto;
+
+        h1 {
+            font-weight: 300;
+            font-size: 32px;
+            margin-bottom: 28px;
+        }
     }
 
-    h2 {
-        font-weight: 300;
-        font-size: 18px;
-        margin: 0;
+    .video {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: 1fr;
+        grid-template-areas: 'video playlist';
+        column-gap: 16px;
+        margin-top: 96px;
+
+        .activeVideo {
+            grid-area: video;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
     }
 }

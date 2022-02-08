@@ -32,8 +32,6 @@ export default function Home() {
 
         const { code } = data.room;
 
-        console.log(code);
-
         sessionStorage.setItem('roomCode', code);
 
         router.push({

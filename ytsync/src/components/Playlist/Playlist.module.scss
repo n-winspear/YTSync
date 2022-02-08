@@ -1,0 +1,120 @@
+/* GLOBAL COLOURS */
+$indigo-dye: #133c55ff;
+$honolulu-blue: #386fa4ff;
+$carolina-blue: #59a5d8ff;
+$baby-blue: #84d2f6ff;
+$sky-blue-crayola: #91e5f6ff;
+
+.playlist {
+    grid-area: playlist;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    border: solid 1px #d3d3d3ff;
+    border-radius: 8px;
+    background-color: #f1f1f1;
+    margin: 0px 16px;
+    overflow: hidden;
+
+    h1 {
+        margin: 0px;
+        padding: 8px;
+        width: 100%;
+        text-align: center;
+        border-bottom: solid 1px #f8f8f8ff;
+        color: $carolina-blue;
+        background-color: #f8f8f8ff;
+        box-shadow: 0 2px 1px #d3d3d3ff;
+    }
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        height: 650px;
+        width: 100%;
+        overflow: auto;
+
+        li:first-child {
+            margin-top: 16px;
+        }
+    }
+
+    li {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        flex-shrink: 0;
+        width: 92%;
+        min-height: 108px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border: solid 1px transparent;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 12px;
+        box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 2px;
+
+        &:hover {
+            cursor: pointer;
+            background-color: #f8f8f8;
+        }
+
+        h2 {
+            font-size: 16px;
+            margin: 0px;
+        }
+
+        .video {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            width: 85%;
+            height: 100%;
+
+            .channel {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: auto;
+
+                .profileImage {
+                    border-radius: 50px;
+                }
+
+                h4 {
+                    font-weight: 300;
+                    font-size: 16px;
+                    margin: 0px 0px 0px 8px;
+                }
+            }
+        }
+
+        .iconContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 15%;
+            height: 100%;
+
+            .deleteIcon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                border-radius: 48px;
+                transition: all 0.2s ease 0s;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: #f1f1f1;
+                }
+            }
+        }
+    }
+}

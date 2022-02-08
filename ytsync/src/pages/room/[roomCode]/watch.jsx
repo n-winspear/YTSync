@@ -3,54 +3,108 @@ import Head from 'next/head';
 
 // Custom Component Imports
 import HeaderBar from '../../../components/HeaderBar';
-import YoutubeEmbed from '../../../components/YoutubeEmbed';
+import ActiveVideo from '../../../components/ActiveVideo';
+import SearchBar from '../../../components/SearchBar';
+import Playlist from '../../../components/Playlist';
 
 // Style Imports
 import styles from '../../../styles/watch.module.scss';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 export async function getServerSideProps({ query }) {
-    const { v: videoId } = query;
+    const { roomCode } = query;
 
-    const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}&key=${process.env.YT_API_KEY}`
+    const dbRes = await fetch(
+        `${process.env.CURRENT_URL}/api/room/${roomCode}/getDetails`,
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+        }
     );
 
-    const data = await response.json();
+    const dbData = await dbRes.json();
 
-    const videoData = data.items[0];
+    const playlist = await Promise.all(
+        dbData.room.playlist.map(async (videoInfo) => {
+            const [videoId, channelThumbnailURL] = videoInfo.split('|');
+
+            const ytRes = await fetch(
+                `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}&key=${process.env.YT_API_KEY}`
+            );
+
+            const ytData = await ytRes.json();
+
+            const videoData = { ...ytData.items[0], channelThumbnailURL };
+
+            return videoData;
+        })
+    );
+
+    console.log('I RAN');
 
     return {
         props: {
-            videoData,
+            playlist,
         },
     };
 }
 
-// TODO: Add in video fetching functionality
+const Watch = ({ playlist }) => {
+    const router = useRouter();
+    const { roomCode } = router.query;
+    const [activeVideo, setActiveVideo] = useState(playlist[0]);
+    const [currentPlaylist, setCurrentPlaylist] = useState(playlist);
 
-const Watch = ({ videoData }) => {
-    const { title, description } = videoData.snippet;
-    const { viewCount, likeCount } = videoData.statistics;
-    const { id } = videoData;
+    const updatePlaylist = async (videoId) => {
+        const updatedPlaylist = await currentPlaylist.filter(
+            (video) => video.id !== videoId
+        );
+
+        const res = await fetch(`/api/room/${roomCode}/deleteVideo`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            body: JSON.stringify({ videoId: videoId }),
+        });
+
+        setCurrentPlaylist(updatedPlaylist);
+    };
+
+    useEffect(() => {
+        setActiveVideo(currentPlaylist[0]);
+    }, [currentPlaylist]);
 
     return (
         <>
             <Head>
-                <title>{title}</title>
-                <meta
-                    name='description'
-                    content='Youtube Sync search results'
-                />
+                <title>Watch</title>
+                <meta name='description' content='Youtube Sync Watch' />
                 <link rel='icon' href='/favicon.ico' />
             </Head>
             <main>
-                <HeaderBar />
-                <div className={styles.video}>
-                    <YoutubeEmbed videoId={id} />
-                    <h1>{title}</h1>
-                    <h2>{description}</h2>
-                    <h2>{viewCount}</h2>
-                    <h2>{likeCount}</h2>
+                <HeaderBar showSearch={true} />
+                <div className={styles.watch}>
+                    {currentPlaylist.length === 0 ? (
+                        <div className={styles.noVideo}>
+                            <h1>No Videos In Playlist</h1>
+                            <SearchBar />
+                        </div>
+                    ) : (
+                        <div className={styles.video}>
+                            <ActiveVideo video={activeVideo} />
+                            <Playlist
+                                currentPlaylist={currentPlaylist}
+                                setActiveVideo={setActiveVideo}
+                                updatePlaylist={updatePlaylist}
+                            />
+                        </div>
+                    )}
                 </div>
             </main>
         </>

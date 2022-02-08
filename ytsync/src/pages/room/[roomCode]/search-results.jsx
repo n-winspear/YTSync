@@ -19,8 +19,24 @@ export async function getServerSideProps({ query }) {
 
     const data = await response.json();
 
-    const videoResults = data.items.filter(
+    const filteredData = data.items.filter(
         (video) => video.id.kind === 'youtube#video'
+    );
+
+    const videoResults = await Promise.all(
+        filteredData.map(async (video) => {
+            const { channelId } = video.snippet;
+
+            const chRes = await fetch(
+                `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${process.env.YT_API_KEY}`
+            );
+
+            const chData = await chRes.json();
+
+            video.channel = chData.items[0];
+
+            return video;
+        })
     );
 
     return {
@@ -59,7 +75,7 @@ export default function SearchResults({ videoResults }) {
                 })
                 .reverse()
         );
-    }, []);
+    }, [searchText]);
 
     return (
         <>

@@ -5,13 +5,16 @@ $carolina-blue: #59a5d8ff;
 $baby-blue: #84d2f6ff;
 $sky-blue-crayola: #91e5f6ff;
 
+/* CUSTOM VARIABLES */
+$searchResultHeight: 160px;
+
 .result {
     display: flex;
     flex-grow: 1;
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    height: 132px;
+    height: $searchResultHeight;
     margin-bottom: 12px;
 
     &:hover {
@@ -23,7 +26,7 @@ $sky-blue-crayola: #91e5f6ff;
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 224px;
+        width: 284px;
     }
 
     h2,
@@ -37,9 +40,9 @@ $sky-blue-crayola: #91e5f6ff;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
-        width: 516px;
+        width: 620px;
         height: 100%;
-        padding: 4px 16px;
+        padding: 4px 12px 8px 16px;
 
         h2 {
             font-size: 18px;
@@ -56,7 +59,7 @@ $sky-blue-crayola: #91e5f6ff;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 12px;
+            margin-top: auto;
 
             .profileImage {
                 border-radius: 50px;
@@ -72,6 +75,24 @@ $sky-blue-crayola: #91e5f6ff;
         .releasedTime {
             margin-top: 8px;
             font-weight: 300;
+        }
+    }
+
+    .button {
+        width: 56px;
+        height: $searchResultHeight;
+        border: transparent;
+        border-radius: 0px 4px 4px 0px;
+        background-color: $carolina-blue;
+        transition: all 0.2s ease 0s;
+
+        &:hover {
+            cursor: pointer;
+            filter: brightness(110%);
+        }
+
+        &:focus {
+            outline: none;
         }
     }
 }

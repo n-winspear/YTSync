@@ -4,16 +4,32 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
 // Custom Component Imports
+import { IconContext } from 'react-icons/lib';
+import { BiAddToQueue } from 'react-icons/bi';
+import { MdDone } from 'react-icons/md';
+import { TailSpin } from 'react-loading-icons';
 
 // Style Imports
 import styles from './SearchResult.module.scss';
 
 const SearchResult = ({ video }) => {
     const router = useRouter();
-    const { roomId } = router.query;
+    const { roomCode } = router.query;
     const [timeSincePublished, setTimeSincePublished] = useState();
-    const { url, width, height } = video.snippet.thumbnails.medium;
+    const [resultIcon, setResultIcon] = useState(<BiAddToQueue />);
+
+    const {
+        url: videoThumbnailURL,
+        width,
+        height,
+    } = video.snippet.thumbnails.medium;
     const { title, description, publishedAt } = video.snippet;
+    const {
+        title: channelTitle,
+        thumbnails: {
+            default: { url: channelThumbnailURL },
+        },
+    } = video.channel.snippet;
     const { videoId } = video.id;
 
     const calculateTimeSincePublished = async () => {
@@ -50,11 +66,21 @@ const SearchResult = ({ video }) => {
         }
     };
 
-    const watchVideo = () => {
-        router.push({
-            pathname: `/room/${roomId}/watch`,
-            query: { v: videoId },
+    const addVideoToPlaylist = async () => {
+        setResultIcon(<TailSpin height={'1.8rem'} width={'32px'} />);
+
+        const res = await fetch(`/api/room/${roomCode}/addVideo`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                videoId: videoId,
+                channelThumbnailURL: channelThumbnailURL,
+            }),
         });
+
+        setResultIcon(<MdDone />);
     };
 
     useEffect(async () => {
@@ -66,27 +92,37 @@ const SearchResult = ({ video }) => {
             className={styles.result}
             onClick={(e) => {
                 e.preventDefault();
-                watchVideo();
+                addVideoToPlaylist();
             }}>
             <div className={styles.thumbnail}>
-                <Image src={url} width={width} height={height} />
+                <Image src={videoThumbnailURL} width={width} height={height} />
             </div>
             <div className={styles.text}>
                 <h2>{title}</h2>
                 <h3>{description}</h3>
                 <div className={styles.channel}>
                     <Image
-                        src={
-                            'https://yt3.ggpht.com/ytc/AKedOLT0bksPj0ebo-NGS9qaGZpJUPNzk5umqUoo32cQ=s176-c-k-c0x00ffffff-no-rj-mo'
-                        }
+                        src={channelThumbnailURL}
                         width={20}
                         height={20}
                         className={styles.profileImage}
                     />
-                    <h4>Jolly</h4>
+                    <h4>{channelTitle}</h4>
                 </div>
                 <div className={styles.releasedTime}>{timeSincePublished}</div>
             </div>
+            <button className={styles.button}>
+                <IconContext.Provider
+                    value={{
+                        size: '60%',
+                        color: '#f1f1f1',
+                        style: {
+                            verticalAlign: 'middle',
+                        },
+                    }}>
+                    {resultIcon}
+                </IconContext.Provider>
+            </button>
         </div>
     );
 };

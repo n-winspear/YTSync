@@ -1,0 +1,35 @@
+.activeVideo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    max-width: 960px;
+
+    h1 {
+        font-weight: 500;
+        font-size: 28px;
+        margin: 20px 0px 4px 0px;
+    }
+
+    h2 {
+        font-weight: 300;
+        font-size: 18px;
+        margin: 0;
+    }
+
+    .stats {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 12px;
+
+        h3 {
+            font-weight: 300;
+            font-size: 18px;
+            margin: 0px;
+
+            &:last-child {
+                margin-left: 16px;
+            }
+        }
+    }
+}
