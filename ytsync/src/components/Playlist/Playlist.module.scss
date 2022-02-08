@@ -38,6 +38,7 @@ $sky-blue-crayola: #91e5f6ff;
         height: 650px;
         width: 100%;
         overflow: auto;
+        scrollbar-width: none;
 
         li:first-child {
             margin-top: 16px;

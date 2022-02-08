@@ -44,8 +44,6 @@ export async function getServerSideProps({ query }) {
         })
     );
 
-    console.log('I RAN');
-
     return {
         props: {
             playlist,

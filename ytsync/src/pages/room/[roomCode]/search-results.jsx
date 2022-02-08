@@ -6,20 +6,22 @@ import { useRouter } from 'next/router';
 // Custom Component Imports
 import HeaderBar from '../../../components/HeaderBar';
 import SearchResult from '../../../components/SearchResult';
+import { IconContext } from 'react-icons/lib';
+import { FaPlay } from 'react-icons/fa';
 
 // Style Imports
 import styles from '../../../styles/search-results.module.scss';
 
 export async function getServerSideProps({ query }) {
-    const { searchText } = query;
+    const { searchText, roomCode } = query;
 
-    const response = await fetch(
+    const ytRes = await fetch(
         `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${searchText}&key=${process.env.YT_API_KEY}`
     );
 
-    const data = await response.json();
+    const ytData = await ytRes.json();
 
-    const filteredData = data.items.filter(
+    const filteredData = ytData.items.filter(
         (video) => video.id.kind === 'youtube#video'
     );
 
@@ -39,15 +41,31 @@ export async function getServerSideProps({ query }) {
         })
     );
 
+    const roomRes = await fetch(
+        `${process.env.CURRENT_URL}/api/room/${roomCode}/getDetails`,
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+        }
+    );
+
+    const roomData = await roomRes.json();
+
+    const playlistLength = roomData.room.playlist.length;
+
     return {
-        props: { videoResults },
+        props: { videoResults, playlistLength },
     };
 }
 
-export default function SearchResults({ videoResults }) {
+export default function SearchResults({ videoResults, playlistLength }) {
     const router = useRouter();
-    const { searchText } = router.query;
+    const { searchText, roomCode } = router.query;
     const [videos, setVideos] = useState([]);
+    const [videoCount, setVideoCount] = useState(playlistLength);
 
     useEffect(async () => {
         setVideos(
@@ -77,6 +95,12 @@ export default function SearchResults({ videoResults }) {
         );
     }, [searchText]);
 
+    const watch = () => {
+        router.push({
+            pathname: `/room/${roomCode}/watch`,
+        });
+    };
+
     return (
         <>
             <Head>
@@ -90,11 +114,46 @@ export default function SearchResults({ videoResults }) {
 
             <main>
                 <HeaderBar showSearch={true} />
-                <div className={styles.searchResults}>
-                    <h1>Search results for '{searchText}'</h1>
-                    {videos.map((video) => (
-                        <SearchResult video={video} key={video.id.videoId} />
-                    ))}
+                <div className={styles.resultsPage}>
+                    <div className={styles.searchResults}>
+                        <h1>Search results for '{searchText}'</h1>
+                        {videos.map((video) => (
+                            <SearchResult
+                                video={video}
+                                key={video.id.videoId}
+                                videoCount={videoCount}
+                                setVideoCount={setVideoCount}
+                            />
+                        ))}
+                    </div>
+                    {videoCount > 0 && (
+                        <div className={styles.watchIndicator}>
+                            <h2
+                                className={
+                                    styles.videoCount
+                                }>{`${videoCount} videos in the playlist`}</h2>
+                            <div className={styles.watch}>
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        watch();
+                                    }}>
+                                    WATCH
+                                    <IconContext.Provider
+                                        value={{
+                                            size: '44%',
+                                            color: '#59a5d8ff',
+                                            style: {
+                                                verticalAlign: 'middle',
+                                                marginLeft: '12px',
+                                            },
+                                        }}>
+                                        <FaPlay />
+                                    </IconContext.Provider>
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </main>
         </>

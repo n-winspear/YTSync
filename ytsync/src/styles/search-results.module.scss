@@ -5,20 +5,92 @@ $carolina-blue: #59a5d8ff;
 $baby-blue: #84d2f6ff;
 $sky-blue-crayola: #91e5f6ff;
 
-.searchResults {
+/* CUSTOM VARIABLES */
+$headerBarHeight: 56px;
+$watchIndicatorHeight: 60px;
+$primaryTextColour: #f1f1f1ff;
+$secondaryTextColour: #090909ff;
+
+.resultsPage {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     justify-content: flex-start;
-    align-items: center;
-    max-width: 960px;
-    margin: 0 auto;
-    padding-top: 20px;
+    height: calc(100vh - $headerBarHeight);
+    width: 100vw;
 
-    h1 {
-        margin: 24px 0px;
+    .searchResults {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        justify-content: flex-start;
+        align-items: center;
+        max-width: 960px;
+        margin: 0 auto;
+        padding-top: 20px;
+        overflow: auto;
+        scrollbar-width: none;
+
+        h1 {
+            margin: 24px 0px;
+            width: 100%;
+            font-weight: 500;
+            font-size: 24px;
+        }
+    }
+
+    .watchIndicator {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        height: $watchIndicatorHeight;
         width: 100%;
-        font-weight: 500;
-        font-size: 24px;
+        margin-top: auto;
+        background-color: $carolina-blue;
+
+        .videoCount {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            color: $primaryTextColour;
+            font-weight: 700;
+            font-size: 20px;
+            height: 100%;
+            padding: 4px 20px;
+        }
+
+        .watch {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            margin: 0px 12px 0px auto;
+
+            button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 42px;
+                border: transparent;
+                border-radius: 8px;
+                background-color: $primaryTextColour;
+                transition: all 0.2s ease 0s;
+                color: $carolina-blue;
+                font-family: 'Lato', sans-serif;
+                font-weight: 900;
+                font-size: 16px;
+                padding: 0px 16px;
+                box-shadow: 0 2px 0px #a1a1a1;
+
+                &:hover {
+                    cursor: pointer;
+                    filter: brightness(110%);
+                }
+
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
     }
 }

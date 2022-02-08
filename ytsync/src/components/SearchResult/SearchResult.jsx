@@ -12,7 +12,7 @@ import { TailSpin } from 'react-loading-icons';
 // Style Imports
 import styles from './SearchResult.module.scss';
 
-const SearchResult = ({ video }) => {
+const SearchResult = ({ video, videoCount, setVideoCount }) => {
     const router = useRouter();
     const { roomCode } = router.query;
     const [timeSincePublished, setTimeSincePublished] = useState();
@@ -81,6 +81,8 @@ const SearchResult = ({ video }) => {
         });
 
         setResultIcon(<MdDone />);
+
+        setVideoCount(videoCount + 1);
     };
 
     useEffect(async () => {
