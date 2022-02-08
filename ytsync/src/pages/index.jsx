@@ -55,6 +55,7 @@ export default function Home() {
     const joinRoom = async () => {
         if (otp.length === 5) {
             setErrored(false);
+            setErrorMessage('');
             const otpUpper = otp.toUpperCase();
 
             const roomRes = await fetch(`/api/room/${otpUpper}/getDetails`, {
