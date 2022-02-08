@@ -29,7 +29,90 @@ $secondaryTextColour: #090909ff;
         margin: 0;
     }
 
-    button {
+    .options {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 316px;
+
+        .createBtn {
+            width: 264px;
+            height: 48px;
+            border: transparent;
+            border-radius: 4px;
+            background-color: $carolina-blue;
+            color: $primaryTextColour;
+            font-size: 20px;
+            font-weight: 300;
+            box-shadow: rgba(96, 96, 96, 0.2) 0px 2px 8px 0px;
+            transition: all 0.2s ease 0s;
+
+            &:hover {
+                cursor: pointer;
+                filter: brightness(110%);
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        .separator {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+
+            h3 {
+                margin: 48px 0px 40px 0px;
+                color: #d3d3d3;
+                font-weight: 400;
+            }
+
+            h4 {
+                margin: 0px 0px 16px 0px;
+                color: $carolina-blue;
+                font-weight: 700;
+                font-size: 20px;
+            }
+        }
+
+        .code {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            width: 100%;
+            height: 60px;
+        }
+
+        .joinBtn {
+            width: 132px;
+            height: 48px;
+            border: transparent;
+            border-radius: 4px;
+            background-color: $carolina-blue;
+            color: $primaryTextColour;
+            font-size: 20px;
+            font-weight: 300;
+            margin-top: 16px;
+            box-shadow: rgba(96, 96, 96, 0.2) 0px 2px 8px 0px;
+            transition: all 0.2s ease 0s;
+
+            &:hover {
+                cursor: pointer;
+                filter: brightness(110%);
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+
+    .reJoinBtn {
         width: 264px;
         height: 48px;
         border: transparent;

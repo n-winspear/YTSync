@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 
 // Custom Component Imports
 import HeaderBar from '../components/HeaderBar';
-import { NIL, v4 as uuidv4 } from 'uuid';
+import OtpInput from 'react-otp-input';
 
 // Style Imports
 import styles from '../styles/home.module.scss';
@@ -14,10 +14,16 @@ export default function Home() {
     const router = useRouter(null);
 
     const [roomCode, setRoomCode] = useState(null);
+    const [otp, setOtp] = useState('');
+    const [errored, setErrored] = useState(false);
 
     useEffect(async () => {
         setRoomCode(sessionStorage.getItem('roomCode'));
     }, []);
+
+    const handleOtpChange = (newOtp) => {
+        setOtp(newOtp);
+    };
 
     const createRooom = async () => {
         const res = await fetch('/api/createRoom', {
@@ -45,6 +51,16 @@ export default function Home() {
         });
     };
 
+    const joinRoom = async () => {
+        if (otp.length === 5) {
+            setErrored(false);
+            const otpUpper = otp.toUpperCase();
+            router.push({
+                pathname: `/room/${otpUpper}`,
+            });
+        } else setErrored(true);
+    };
+
     return (
         <div>
             <Head>
@@ -59,23 +75,75 @@ export default function Home() {
                 <div className={styles.home}>
                     <h2>Welcome to</h2>
                     <h1>Youtube Sync</h1>
-                    {roomCode === null ? (
+                    <div className={styles.options}>
+                        {roomCode === null ? (
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault;
+                                    createRooom();
+                                }}
+                                className={styles.createBtn}>
+                                Create Room
+                            </button>
+                        ) : (
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault;
+                                    reJoinRoom();
+                                }}
+                                className={styles.reJoinBtn}>
+                                Rejoin Room
+                            </button>
+                        )}
+                        <div className={styles.separator}>
+                            <h3>or</h3>
+                            <h4>Enter Room Code</h4>
+                        </div>
+                        <div
+                            className={styles.code}
+                            onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    joinRoom();
+                                }
+                            }}>
+                            <OtpInput
+                                value={otp}
+                                containerStyle={{
+                                    display: 'flex',
+                                    justifyContent: 'space-around',
+                                    alignItems: 'flex-start',
+                                    width: '100%',
+                                    height: '100%',
+                                }}
+                                inputStyle={{
+                                    height: '60px',
+                                    width: '50px',
+                                    border: 'solid 1px #d3d3d3ff',
+                                    'border-radius': '4px',
+                                    padding: '8px 12px',
+                                    fontSize: '32px',
+                                    textTransform: 'uppercase',
+                                    color: '#090909',
+                                    fontWeight: '300',
+                                }}
+                                errorStyle={{
+                                    border: 'solid 1px #ff0033',
+                                }}
+                                onChange={handleOtpChange}
+                                numInputs={5}
+                                hasErrored={errored}
+                            />
+                        </div>
                         <button
                             onClick={(e) => {
                                 e.preventDefault;
-                                createRooom();
-                            }}>
-                            Create Room
+                                joinRoom();
+                            }}
+                            className={styles.joinBtn}>
+                            Join
                         </button>
-                    ) : (
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault;
-                                reJoinRoom();
-                            }}>
-                            Rejoin Room
-                        </button>
-                    )}
+                    </div>
                 </div>
             </main>
         </div>
