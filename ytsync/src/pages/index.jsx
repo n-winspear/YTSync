@@ -16,6 +16,7 @@ export default function Home() {
     const [roomCode, setRoomCode] = useState(null);
     const [otp, setOtp] = useState('');
     const [errored, setErrored] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(async () => {
         setRoomCode(sessionStorage.getItem('roomCode'));
@@ -55,10 +56,29 @@ export default function Home() {
         if (otp.length === 5) {
             setErrored(false);
             const otpUpper = otp.toUpperCase();
-            router.push({
-                pathname: `/room/${otpUpper}/watch`,
+
+            const roomRes = await fetch(`/api/room/${otpUpper}/getDetails`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
             });
-        } else setErrored(true);
+
+            const roomData = await roomRes.json();
+
+            if (roomData.room !== null) {
+                router.push({
+                    pathname: `/room/${otpUpper}/watch`,
+                });
+            } else {
+                setErrored(true);
+                setErrorMessage('Room Not Found');
+            }
+        } else {
+            setErrored(true);
+            setErrorMessage('Invalid Room Code');
+        }
     };
 
     return (
@@ -135,6 +155,11 @@ export default function Home() {
                                 hasErrored={errored}
                             />
                         </div>
+                        {errorMessage !== '' && (
+                            <div className={styles.errorMessage}>
+                                {errorMessage}
+                            </div>
+                        )}
                         <button
                             onClick={(e) => {
                                 e.preventDefault;
