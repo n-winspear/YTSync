@@ -13,9 +13,11 @@ $secondaryTextColour: #090909ff;
 .home {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    height: calc(60vh - $headerBarHeight);
+    padding-top: 160px;
+    height: calc(100vh - $headerBarHeight);
+    scrollbar-width: none;
 
     h1 {
         font-size: 84px;
