@@ -56,7 +56,7 @@ export default function Home() {
             setErrored(false);
             const otpUpper = otp.toUpperCase();
             router.push({
-                pathname: `/room/${otpUpper}`,
+                pathname: `/room/${otpUpper}/watch`,
             });
         } else setErrored(true);
     };
