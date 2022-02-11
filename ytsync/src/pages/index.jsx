@@ -141,7 +141,7 @@ export default function Home() {
                                     height: '60px',
                                     width: '50px',
                                     border: 'solid 1px #d3d3d3ff',
-                                    'border-radius': '4px',
+                                    borderRadius: '4px',
                                     padding: '8px 12px',
                                     fontSize: '32px',
                                     textTransform: 'uppercase',

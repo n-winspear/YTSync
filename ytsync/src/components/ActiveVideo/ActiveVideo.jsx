@@ -1,17 +1,116 @@
 // Custom Imports
-import YoutubeEmbed from '../YoutubeEmbed';
+import YouTube from 'react-youtube';
+
+// Custom Component Imports
+import { IconContext } from 'react-icons/lib';
+import { FaPlay } from 'react-icons/fa';
+import { FaPause } from 'react-icons/fa';
+import { RiFullscreenFill } from 'react-icons/ri';
 
 // Style Imports
 import styles from './ActiveVideo.module.scss';
+import { useEffect } from 'react/cjs/react.development';
 
-const ActiveVideo = ({ video }) => {
+const ActiveVideo = ({
+    video,
+    playVideo,
+    pauseVideo,
+    fullScreenVideo,
+    endOfVideo,
+    setYtPlayer,
+}) => {
     const { title, description } = video.snippet;
     const { viewCount, likeCount } = video.statistics;
     const { id } = video;
+    const origin = `${process.env.NEXT_PUBLIC_CURRENT_URL}`;
 
     return (
         <div className={styles.activeVideo}>
-            <YoutubeEmbed videoId={id} />
+            <YouTube
+                title={title}
+                opts={{
+                    cc_lang_pref: 'en',
+                    cc_load_poicy: '1',
+                    enablejsapi: '1',
+                    iv_load_policy: '3',
+                    modestbranding: '1',
+                    origin: origin,
+                    rel: '0',
+                    width: '856',
+                    height: '482',
+                    src: `https://www.youtube.com/embed/${id}`,
+                    frameBorder: '0',
+                    allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
+                    allowFullScreen: true,
+                    playerVars: {
+                        controls: '0',
+                        disablekb: '1',
+                    },
+                }}
+                onReady={(e) => {
+                    setYtPlayer(e.target);
+                }}
+                onEnd={(e) => {
+                    endOfVideo();
+                }}
+            />
+            <div className={styles.controls}>
+                <button
+                    onClick={(e) => {
+                        e.preventDefault();
+                        playVideo();
+                    }}
+                    className={styles.play}>
+                    PLAY
+                    <IconContext.Provider
+                        value={{
+                            size: '52%',
+                            color: '#f1f1f1',
+                            style: {
+                                verticalAlign: 'middle',
+                                marginLeft: '12px',
+                            },
+                        }}>
+                        <FaPlay />
+                    </IconContext.Provider>
+                </button>
+                <button
+                    onClick={(e) => {
+                        e.preventDefault();
+                        pauseVideo();
+                    }}
+                    className={styles.pause}>
+                    PAUSE
+                    <IconContext.Provider
+                        value={{
+                            size: '52%',
+                            color: '#f1f1f1',
+                            style: {
+                                verticalAlign: 'middle',
+                                marginLeft: '12px',
+                            },
+                        }}>
+                        <FaPause />
+                    </IconContext.Provider>
+                </button>
+                <button
+                    onClick={(e) => {
+                        e.preventDefault();
+                        fullScreenVideo();
+                    }}
+                    className={styles.fullScreen}>
+                    <IconContext.Provider
+                        value={{
+                            size: '88%',
+                            color: '#f1f1f1',
+                            style: {
+                                verticalAlign: 'middle',
+                            },
+                        }}>
+                        <RiFullscreenFill />
+                    </IconContext.Provider>
+                </button>
+            </div>
             <h1>{title}</h1>
             <div className={styles.stats}>
                 <h3>{viewCount} views</h3>

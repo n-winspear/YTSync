@@ -1,3 +1,14 @@
+/* GLOBAL COLOURS */
+$indigo-dye: #133c55ff;
+$honolulu-blue: #386fa4ff;
+$carolina-blue: #59a5d8ff;
+$baby-blue: #84d2f6ff;
+$sky-blue-crayola: #91e5f6ff;
+
+/* CUSTOM VARIABLES */
+$primaryTextColour: #f1f1f1ff;
+$secondaryTextColour: #090909ff;
+
 .activeVideo {
     display: flex;
     flex-direction: column;
@@ -15,6 +26,54 @@
         font-weight: 300;
         font-size: 18px;
         margin: 0;
+    }
+
+    .controls {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        height: 48px;
+        width: 100%;
+
+        button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: fit-content;
+            height: 36px;
+            border: transparent;
+            border-radius: 4px;
+            background-color: $carolina-blue;
+            color: $primaryTextColour;
+
+            font-size: 20px;
+            font-weight: 300;
+            box-shadow: rgba(96, 96, 96, 0.2) 0px 2px 8px 0px;
+            transition: all 0.2s ease 0s;
+
+            &:hover {
+                cursor: pointer;
+                filter: brightness(110%);
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        .play {
+            padding: 0px 20px;
+            margin-right: 12px;
+        }
+
+        .pause {
+            padding: 0px 20px;
+            margin-right: 12px;
+        }
+
+        .fullScreen {
+            margin-left: auto;
+        }
     }
 
     .stats {

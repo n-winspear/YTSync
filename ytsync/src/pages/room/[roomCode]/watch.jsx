@@ -6,11 +6,11 @@ import HeaderBar from '../../../components/HeaderBar';
 import ActiveVideo from '../../../components/ActiveVideo';
 import SearchBar from '../../../components/SearchBar';
 import Playlist from '../../../components/Playlist';
+import Pusher from 'pusher-js';
 
 // Style Imports
 import styles from '../../../styles/watch.module.scss';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 
 export async function getServerSideProps({ query }) {
     const { roomCode } = query;
@@ -47,15 +47,122 @@ export async function getServerSideProps({ query }) {
     return {
         props: {
             playlist,
+            roomCode,
         },
     };
 }
 
-const Watch = ({ playlist }) => {
-    const router = useRouter();
-    const { roomCode } = router.query;
+const Watch = ({ playlist, roomCode }) => {
     const [activeVideo, setActiveVideo] = useState(playlist[0]);
     const [currentPlaylist, setCurrentPlaylist] = useState(playlist);
+    const [onlineUsers, setOnlineUsers] = useState([]);
+    const [username, setUsername] = useState('');
+    const [ytPlayer, setYtPlayer] = useState(null);
+    const [playerLoaded, setPlayerLoaded] = useState(false);
+
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+        cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
+        authEndpoint: '/api/pusher/auth',
+        auth: {
+            params: { user_id: username },
+        },
+    });
+
+    useEffect(() => {
+        setActiveVideo(currentPlaylist[0]);
+    }, [currentPlaylist]);
+
+    useEffect(() => {
+        if (ytPlayer !== null && playerLoaded === false) {
+            const channel = pusher.subscribe(`presence-${roomCode}`);
+
+            // New member joins the room
+            channel.bind('pusher:member_added', (member) => {
+                setOnlineUsers((prevState) => [
+                    ...prevState,
+                    { username: member.info.username },
+                ]);
+            });
+
+            // Play button pressed
+            channel.bind('play-video', (data) => {
+                const { username } = data;
+                ytPlayer.playVideo();
+            });
+
+            // Pause button pressed
+            channel.bind('pause-video', (data) => {
+                const { username } = data;
+                ytPlayer.pauseVideo();
+            });
+
+            // Loading first video
+            ytPlayer.cueVideoById(activeVideo.id, 0);
+
+            setPlayerLoaded(true);
+        }
+        return () => {
+            pusher.unsubscribe(`presence-${roomCode}`);
+        };
+    }, [ytPlayer]);
+
+    useEffect(async () => {
+        setUsername(sessionStorage.getItem('username'));
+    }, []);
+
+    const handleKeyPress = (e) => {
+        const currentTime = ytPlayer.getCurrentTime();
+
+        switch (e.code) {
+            case 'Space':
+                const playerState = ytPlayer.getPlayerState();
+                if (playerState === 1) {
+                    pauseVideo();
+                } else {
+                    playVideo();
+                }
+                break;
+
+            case 'ArrowRight':
+                ytPlayer.seekTo(currentTime + 5, true);
+                break;
+
+            case 'ArrowLeft':
+                ytPlayer.seekTo(currentTime - 5, true);
+                break;
+        }
+    };
+
+    const playVideo = async () => {
+        await fetch(`/api/room/${roomCode}/playVideo`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            body: JSON.stringify({ username: username }),
+        });
+    };
+
+    const pauseVideo = async () => {
+        await fetch(`/api/room/${roomCode}/pauseVideo`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            },
+            body: JSON.stringify({ username: username }),
+        });
+    };
+
+    const fullScreenVideo = () => {
+        const iFrame = ytPlayer.getIframe();
+        iFrame.requestFullscreen();
+    };
+
+    const endOfVideo = async () => {
+        console.log('The video has ended!');
+    };
 
     const updatePlaylist = async (videoId) => {
         const updatedPlaylist = await currentPlaylist.filter(
@@ -74,10 +181,6 @@ const Watch = ({ playlist }) => {
         setCurrentPlaylist(updatedPlaylist);
     };
 
-    useEffect(() => {
-        setActiveVideo(currentPlaylist[0]);
-    }, [currentPlaylist]);
-
     return (
         <>
             <Head>
@@ -85,7 +188,11 @@ const Watch = ({ playlist }) => {
                 <meta name='description' content='Youtube Sync Watch' />
                 <link rel='icon' href='/favicon.ico' />
             </Head>
-            <main>
+            <main
+                onKeyUp={(e) => {
+                    e.preventDefault();
+                    handleKeyPress(e);
+                }}>
                 <HeaderBar showSearch={true} />
                 <div className={styles.watch}>
                     {currentPlaylist.length === 0 ? (
@@ -95,7 +202,15 @@ const Watch = ({ playlist }) => {
                         </div>
                     ) : (
                         <div className={styles.video}>
-                            <ActiveVideo video={activeVideo} />
+                            <ActiveVideo
+                                video={activeVideo}
+                                playVideo={playVideo}
+                                pauseVideo={pauseVideo}
+                                endOfVideo={endOfVideo}
+                                fullScreenVideo={fullScreenVideo}
+                                ytPlayer={ytPlayer}
+                                setYtPlayer={setYtPlayer}
+                            />
                             <Playlist
                                 currentPlaylist={currentPlaylist}
                                 setActiveVideo={setActiveVideo}
