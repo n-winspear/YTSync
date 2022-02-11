@@ -76,14 +76,6 @@ const Watch = ({ playlist, roomCode }) => {
         if (ytPlayer !== null && playerLoaded === false) {
             const channel = pusher.subscribe(`presence-${roomCode}`);
 
-            // New member joins the room
-            channel.bind('pusher:member_added', (member) => {
-                setOnlineUsers((prevState) => [
-                    ...prevState,
-                    { username: member.info.username },
-                ]);
-            });
-
             // Play button pressed
             channel.bind('play-video', (data) => {
                 const { username } = data;
@@ -98,6 +90,8 @@ const Watch = ({ playlist, roomCode }) => {
 
             // Loading first video
             ytPlayer.cueVideoById(activeVideo.id, 0);
+
+            console.log('I HAVE BEEN TRIGGERED');
 
             setPlayerLoaded(true);
         }
@@ -219,6 +213,8 @@ const Watch = ({ playlist, roomCode }) => {
                         </div>
                     )}
                 </div>
+
+                <h1>{onlineUsers.length} users online.</h1>
             </main>
         </>
     );
