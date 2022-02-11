@@ -88,6 +88,11 @@ const Watch = ({ playlist, roomCode }) => {
                 ytPlayer.pauseVideo();
             });
 
+            // Delete button pressed
+            channel.bind('delete-video', (data) => {
+                const { username } = data;
+            });
+
             // Loading first video
             ytPlayer.cueVideoById(activeVideo.id, 0);
 

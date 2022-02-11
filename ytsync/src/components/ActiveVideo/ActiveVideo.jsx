@@ -9,8 +9,7 @@ import { RiFullscreenFill } from 'react-icons/ri';
 
 // Style Imports
 import styles from './ActiveVideo.module.scss';
-import { useEffect } from 'react/cjs/react.development';
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 const ActiveVideo = ({
     video,
