@@ -1,6 +1,6 @@
 // Next Imports
 import Head from 'next/head';
-import { useState } from 'react/cjs/react.development';
+import { useState } from 'react';
 
 // Custom Component Imports
 import HeaderBar from '../../../components/HeaderBar';
