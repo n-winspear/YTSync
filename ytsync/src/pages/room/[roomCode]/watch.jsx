@@ -154,8 +154,8 @@ const Watch = ({ playlist, roomCode }) => {
         iFrame.requestFullscreen();
     };
 
-    const endOfVideo = async () => {
-        console.log('The video has ended!');
+    const endOfVideo = async (endedVideoId) => {
+        updatePlaylist(endedVideoId);
     };
 
     const updatePlaylist = async (videoId) => {
@@ -213,8 +213,6 @@ const Watch = ({ playlist, roomCode }) => {
                         </div>
                     )}
                 </div>
-
-                <h1>{onlineUsers.length} users online.</h1>
             </main>
         </>
     );

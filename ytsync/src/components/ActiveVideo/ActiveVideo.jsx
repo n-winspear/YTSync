@@ -50,7 +50,7 @@ const ActiveVideo = ({
                     allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
                     allowFullScreen: true,
                     playerVars: {
-                        controls: '0',
+                        controls: '1',
                         disablekb: '1',
                     },
                 }}
@@ -58,7 +58,8 @@ const ActiveVideo = ({
                     setYtPlayer(e.target);
                 }}
                 onEnd={(e) => {
-                    endOfVideo();
+                    const videoData = e.target.getVideoData();
+                    endOfVideo(videoData.video_id);
                 }}
             />
             <div className={styles.controls}>
