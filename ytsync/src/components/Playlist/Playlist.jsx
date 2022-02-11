@@ -19,7 +19,10 @@ const Playlist = ({ currentPlaylist, setActiveVideo, updatePlaylist }) => {
                         <li key={video.id}>
                             <div
                                 className={styles.video}
-                                onClick={(e) => setActiveVideo(video)}>
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setActiveVideo(video);
+                                }}>
                                 <h2>{video.snippet.title}</h2>
                                 <div className={styles.channel}>
                                     <Image

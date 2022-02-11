@@ -10,6 +10,7 @@ import { RiFullscreenFill } from 'react-icons/ri';
 // Style Imports
 import styles from './ActiveVideo.module.scss';
 import { useEffect } from 'react/cjs/react.development';
+import { useState } from 'react';
 
 const ActiveVideo = ({
     video,
@@ -17,12 +18,19 @@ const ActiveVideo = ({
     pauseVideo,
     fullScreenVideo,
     endOfVideo,
+    ytPlayer,
     setYtPlayer,
 }) => {
     const { title, description } = video.snippet;
     const { viewCount, likeCount } = video.statistics;
     const { id } = video;
     const origin = `${process.env.NEXT_PUBLIC_CURRENT_URL}`;
+
+    useEffect(() => {
+        if (ytPlayer) {
+            ytPlayer.cueVideoById(video.id, 0);
+        }
+    }, [video]);
 
     return (
         <div className={styles.activeVideo}>
@@ -38,7 +46,6 @@ const ActiveVideo = ({
                     rel: '0',
                     width: '856',
                     height: '482',
-                    src: `https://www.youtube.com/embed/${id}`,
                     frameBorder: '0',
                     allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture',
                     allowFullScreen: true,
