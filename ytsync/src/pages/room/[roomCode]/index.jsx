@@ -1,6 +1,7 @@
 // Next Imports
 import Head from 'next/head';
 import { useState } from 'react';
+import { useEffect } from 'react';
 
 // Custom Component Imports
 import HeaderBar from '../../../components/HeaderBar';
@@ -13,7 +14,9 @@ const Room = () => {
     // TODO: Implement a username input box
     const [username, setUsername] = useState('Ealder3301');
 
-    sessionStorage.setItem('username', username);
+    useEffect(() => {
+        sessionStorage.setItem('username', username);
+    });
 
     return (
         <div>
