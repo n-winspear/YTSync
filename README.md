@@ -6,4 +6,6 @@ This project was built to help my partner and I sync up our YouTube watching wit
 
 This project was also a great way for me to learn the NextJS framework, new REDIS-OM functionality, improve my React skills, and work with some API's that I haven't worked with before, namely the YouTube API.
 
+The application can be found at https://yts-sync.vercel.app/
+
 > Nathan Winspear
