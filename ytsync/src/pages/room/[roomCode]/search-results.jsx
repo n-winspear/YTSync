@@ -52,6 +52,8 @@ export async function getServerSideProps({ query }) {
         }
     );
 
+    console.log(roomRes);
+
     const roomData = await roomRes.json();
 
     const playlistLength = roomData.room.playlist.length;
