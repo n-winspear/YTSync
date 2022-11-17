@@ -1,5 +1,4 @@
 import { createRoom } from '../../lib/redis';
-import { u4 as uuidv4 } from 'uuid';
 
 const roomCodeGenerator = async () => {
     const codeLength = 5;
